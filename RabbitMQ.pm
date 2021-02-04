@@ -753,9 +753,10 @@ sub publish {
 
 sub DESTROY {
     my ($self) = @_;
-    $self->_destroy_connection_close
-        if !$have_fieldhash || $pids{$self} && $pids{$self} == $$;
-    $self->_destroy_cleanup;
+    if (!$have_fieldhash || $pids{$self} && $pids{$self} == $$) {
+        $self->_destroy_connection_close;
+        $self->_destroy_cleanup;
+    }
 }
 
 1;
